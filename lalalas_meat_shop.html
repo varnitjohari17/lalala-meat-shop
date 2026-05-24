@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lalala's Meat Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,400&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --blood: #8B0000;
+      --ember: #C0392B;
+      --gold: #D4A017;
+      --bone: #F5ECD7;
+      --char: #1A1008;
+      --smoke: #2E1B0E;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--char);
+      color: var(--bone);
+      font-family: 'Oswald', sans-serif;
+      overflow-x: hidden;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ctext y='20' font-size='20'%3E🔪%3C/text%3E%3C/svg%3E"), auto;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.5;
+    }
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 60px 20px;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, #5a0a0a55 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, #8B000022 0%, transparent 60%),
+        var(--char);
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(-55deg, transparent, transparent 40px, rgba(139,0,0,0.04) 40px, rgba(139,0,0,0.04) 42px);
+      pointer-events: none;
+    }
+    .butcher-ribbon {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--blood), var(--gold), var(--ember), var(--gold), var(--blood));
+      background-size: 300% 100%;
+      animation: shimmer 4s linear infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+    .badge {
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 6px 18px;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+    .shop-name {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 900;
+      font-size: clamp(4rem, 12vw, 9rem);
+      line-height: 0.88;
+      text-transform: uppercase;
+      text-align: center;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.4s forwards;
+    }
+    .shop-name .lalala { color: var(--bone); display: block; }
+    .shop-name .apostrophe-s { color: var(--ember); }
+    .shop-name .meat {
+      color: var(--blood);
+      display: block;
+      -webkit-text-stroke: 2px var(--ember);
+      text-shadow: 0 0 40px rgba(139,0,0,0.6);
+    }
+    .shop-name .shop-word {
+      color: var(--gold);
+      display: block;
+      font-style: italic;
+      font-size: 0.55em;
+      letter-spacing: 0.12em;
+    }
+    .tagline-box {
+      margin-top: 40px;
+      text-align: center;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.7s forwards;
+    }
+    .tagline-hindi {
+      font-family: 'Tiro Devanagari Hindi', serif;
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      color: var(--bone);
+      letter-spacing: 0.03em;
+      line-height: 1.7;
+      padding: 16px 28px;
+      border-left: 3px solid var(--blood);
+      border-right: 3px solid var(--blood);
+      background: rgba(139,0,0,0.1);
+      max-width: 700px;
+    }
+    .tagline-hindi span { color: var(--gold); }
+    .scroll-hint {
+      margin-top: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 1.1s forwards;
+      color: rgba(245,236,215,0.4);
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+    }
+    .scroll-hint .arrow { font-size: 1.2rem; animation: bounce 1.5s ease infinite; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+    .divider { display: flex; align-items: center; gap: 20px; padding: 0 10%; margin: 20px 0; }
+    .divider hr { flex: 1; border: none; border-top: 1px solid rgba(212,160,23,0.3); }
+    .divider span { color: var(--gold); font-size: 1.4rem; }
+    .section { padding: 80px 6%; }
+    .section-header { text-align: center; margin-bottom: 60px; }
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      color: var(--gold);
+      font-style: italic;
+    }
+    .section-header p {
+      color: rgba(245,236,215,0.5);
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .menu-card {
+      background: var(--smoke);
+      border: 1px solid rgba(139,0,0,0.3);
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .menu-card:hover { transform: translateY(-6px); border-color: var(--gold); }
+    .menu-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: var(--blood);
+      transition: width 0.3s ease;
+    }
+    .menu-card:hover::before { width: 8px; background: var(--gold); }
+    .menu-emoji { font-size: 2.4rem; margin-bottom: 16px; display: block; }
+    .menu-card h3 { font-size: 1.3rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--bone); margin-bottom: 8px; }
+    .menu-card p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem; color: rgba(245,236,215,0.55); line-height: 1.6; }
+    .menu-card .price { margin-top: 18px; font-size: 1.1rem; color: var(--gold); font-weight: 700; }
+    .marquee-wrap {
+      background: var(--blood);
+      padding: 14px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      border-top: 2px solid var(--gold);
+      border-bottom: 2px solid var(--gold);
+    }
+    .marquee-inner {
+      display: inline-block;
+      animation: marquee 18s linear infinite;
+      font-size: 1rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--bone);
+    }
+    .marquee-inner span { margin: 0 40px; color: var(--gold); }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .about-section {
+      padding: 80px 10%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .about-text h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); color: var(--gold); font-style: italic; margin-bottom: 20px; }
+    .about-text p { font-family: 'Playfair Display', serif; font-style: italic; color: rgba(245,236,215,0.7); line-height: 1.9; font-size: 1rem; margin-bottom: 16px; }
+    .about-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .stat-box { border: 1px solid rgba(139,0,0,0.4); padding: 24px 20px; text-align: center; background: rgba(139,0,0,0.08); transition: background 0.3s; }
+    .stat-box:hover { background: rgba(139,0,0,0.2); }
+    .stat-box .num { font-size: 2.8rem; font-weight: 900; color: var(--ember); line-height: 1; }
+    .stat-box .label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(245,236,215,0.5); margin-top: 6px; }
+    footer { background: #0d0804; padding: 50px 10%; text-align: center; border-top: 3px solid var(--blood); }
+    footer .logo-sm { font-family: 'Oswald', sans-serif; font-size: 1.8rem; font-weight: 900; text-transform: uppercase; color: var(--bone); margin-bottom: 8px; }
+    footer .logo-sm span { color: var(--ember); }
+    footer .footer-tagline { font-family: 'Tiro Devanagari Hindi', serif; font-size: 1rem; color: var(--gold); margin-bottom: 20px; }
+    footer p { font-size: 0.75rem; letter-spacing: 0.15em; color: rgba(245,236,215,0.3); }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 700px) {
+      .about-section { grid-template-columns: 1fr; padding: 60px 6%; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="butcher-ribbon"></div>
+    <div class="badge">Est. Since Always &nbsp;·&nbsp; Premium Cuts &nbsp;·&nbsp; Fresh Daily</div>
+    <h1 class="shop-name">
+      <span class="lalala">Lalala<span class="apostrophe-s">'s</span></span>
+      <span class="meat">Meat</span>
+      <span class="shop-word">Shop</span>
+    </h1>
+    <div class="tagline-box">
+      <p class="tagline-hindi">" <span>घर बुलाकर</span> ईदी के नाम पर <span>काटकर खा जाती है</span> "</p>
+    </div>
+    <div class="scroll-hint">
+      <span>SCROLL DOWN</span>
+      <span class="arrow">▼</span>
+    </div>
+  </section>
+  <div class="marquee-wrap">
+    <div class="marquee-inner">
+      🥩 Fresh Cuts Daily &nbsp;<span>✦</span>&nbsp; Leg · Heart · Liver · Kidney &nbsp;<span>✦</span>&nbsp; Halal Certified &nbsp;<span>✦</span>&nbsp; Home Delivery Available &nbsp;<span>✦</span>&nbsp; Ghar Bulao, Kaat Ke Khao &nbsp;<span>✦</span>&nbsp;
+      🥩 Fresh Cuts Daily &nbsp;<span>✦</span>&nbsp; Leg · Heart · Liver · Kidney &nbsp;<span>✦</span>&nbsp; Halal Certified &nbsp;<span>✦</span>&nbsp; Home Delivery Available &nbsp;<span>✦</span>&nbsp; Ghar Bulao, Kaat Ke Khao &nbsp;<span>✦</span>&nbsp;
+    </div>
+  </div>
+  <div class="divider"><hr/><span>🔪</span><hr/></div>
+  <section class="section">
+    <div class="section-header">
+      <h2>Our Specialties</h2>
+      <p>Freshly cut · Premium quality · Pure satisfaction</p>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <span class="menu-emoji">🦵</span>
+        <h3>Leg Piece</h3>
+        <p>Juicy, bone-in leg cuts — perfect for slow-cooked curry, handi, or BBQ roast.</p>
+        <div class="price">₹ 420 / kg</div>
+      </div>
+      <div class="menu-card">
+        <span class="menu-emoji">🫀</span>
+        <h3>Heart Piece</h3>
+        <p>Tender and rich — marinated dil ka tukda, best on the grill or in a spicy masala.</p>
+        <div class="price">₹ 320 / kg</div>
+      </div>
+      <div class="menu-card">
+        <span class="menu-emoji">🍖</span>
+        <h3>Liver Piece</h3>
+        <p>Soft, fresh kaleji — the star of every Eid morning. Fry it up with green chillies.</p>
+        <div class="price">₹ 280 / kg</div>
+      </div>
+      <div class="menu-card">
+        <span class="menu-emoji">🫘</span>
+        <h3>Kidney Piece</h3>
+        <p>Premium gurda — cleaned and cut, ideal for karahi or a classic gurda kaleji combo.</p>
+        <div class="price">₹ 260 / kg</div>
+      </div>
+    </div>
+  </section>
+  <div class="divider"><hr/><span>🩸</span><hr/></div>
+  <div class="about-section">
+    <div class="about-text">
+      <h2>Why Lalala's?</h2>
+      <p>Because we don't just sell meat — we deliver an experience. Invite us home, bring the eidi, and we'll make sure the feast is one for the books.</p>
+      <p>Every cut is made with love, precision, and a cleaver that knows no mercy. Keeping Eid tables overflowing for years.</p>
+      <p style="font-family:'Tiro Devanagari Hindi',serif; font-size:1.05rem; color: var(--gold);">घर बुलाकर ईदी के नाम पर काटकर खा जाती है — यही तो हमारी पहचान है! 😄</p>
+    </div>
+    <div class="about-stat-grid">
+      <div class="stat-box"><div class="num">15+</div><div class="label">Years Cutting</div></div>
+      <div class="stat-box"><div class="num">100%</div><div class="label">Halal Certified</div></div>
+      <div class="stat-box"><div class="num">500+</div><div class="label">Happy Families</div></div>
+      <div class="stat-box"><div class="num">∞</div><div class="label">Eid Memories</div></div>
+    </div>
+  </div>
+  <footer>
+    <div class="logo-sm">Lalala<span>'s</span> Meat Shop</div>
+    <div class="footer-tagline">घर बुलाकर ईदी के नाम पर काटकर खा जाती है 🔪</div>
+    <p>© 2026 Lalala's Meat Shop · All cuts reserved · No refunds on love</p>
+  </footer>
+</body>
+</html>
